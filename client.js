@@ -38,6 +38,13 @@ let getItems = () => {
   };
 }
 
+let makeRequest = (option, key, data) => {
+  let request = http.request(options);
+
+  request.write(JSON.stringify(router[key](...(data || []))));
+  request.end();
+}
+
 let router = {
   'register': registerItem,
   'add': addItem,
@@ -55,8 +62,9 @@ let options = {
   }
 };
 
-let request = http.request(options);
-let key = 'register';
-
-request.write(JSON.stringify(router[key]('chairs', 5)));
-request.end();
+makeRequest(options, 'register', ['chairs', 5]);
+makeRequest(options, 'register', ['tables', 5]);
+makeRequest(options, 'register', ['sofas', 5]);
+makeRequest(options, 'add', [1, 5]);
+makeRequest(options, 'delete', [2, 2]);
+makeRequest(options, 'get');
